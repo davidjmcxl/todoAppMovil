@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AlertController, AlertInput, ModalController } from '@ionic/angular';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/models/services/category.service';
 import { TaskService } from 'src/app/models/services/task.service';
 import { Task } from '../../models/task.model';
 import { AddTaskModalPage } from 'src/app/modals/add-task-modal/add-task-modal.page';
+import { fetchAndActivate, getValue, RemoteConfig } from '@angular/fire/remote-config';
 
 @Component({
   selector: 'app-tasks',
@@ -13,7 +14,8 @@ import { AddTaskModalPage } from 'src/app/modals/add-task-modal/add-task-modal.p
   standalone: false,
 })
 export class TasksPage implements OnInit {
-
+  showCategoryFilter = false;
+  remoteConfig = inject(RemoteConfig);
   tasks: Task[] = [];
    categories: Category[] = [];
    selectedCategoryId: string = '';
@@ -25,7 +27,8 @@ export class TasksPage implements OnInit {
       private modalCtrl: ModalController
    ) {}
 
-   ngOnInit() {
+   async ngOnInit() {
+    await this.initRemoteConfig();
      this.loadCategories();
      this.loadTasks();
    }
@@ -34,7 +37,17 @@ export class TasksPage implements OnInit {
      this.loadCategories();
      this.loadTasks();
    }
+   async initRemoteConfig() {
+    this.remoteConfig.settings = {
+      minimumFetchIntervalMillis: 3600000, // 1 hora
+      fetchTimeoutMillis: 10000            // 10 segundos
+    };
 
+    await fetchAndActivate(this.remoteConfig);
+    const featureFlag = getValue(this.remoteConfig, 'showCategoryFilter');
+    this.showCategoryFilter = featureFlag.asBoolean();
+    console.log(' Feature flag:', this.showCategoryFilter);
+  }
    loadTasks() {
      this.tasks = this.taskService.getAll();
    }

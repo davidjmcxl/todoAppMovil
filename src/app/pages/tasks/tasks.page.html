@@ -6,7 +6,7 @@
 
 <ion-content>
   <!-- Filtro de categoría -->
-  <ion-item>
+  <ion-item *ngIf="showCategoryFilter">
     <ion-label>Categoría</ion-label>
     <ion-select [(ngModel)]="selectedCategoryId">
       <ion-select-option value="">Todas</ion-select-option>
