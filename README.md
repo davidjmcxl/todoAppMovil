@@ -135,7 +135,7 @@ src/
 ## 📷 Capturas de Pantalla
 
 <p align="center">
-  <img src="screenshots/cap1.png" width="200" alt="Pantalla de tareas"/>
+  <img width="482" height="801" alt="cap1" src="https://github.com/user-attachments/assets/70507f88-b205-4bdd-859e-a022ac04e78e" />
 </p>
 
 ---
