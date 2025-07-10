@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Categorías</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let cat of categories">
+      <ion-item>
+        <ion-label>{{ cat.name }}</ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="editCategory(cat)">
+          <ion-icon slot="start" name="create"></ion-icon>
+          Editar
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="deleteCategory(cat.id)">
+          <ion-icon slot="start" name="trash"></ion-icon>
+          Eliminar
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addCategory()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

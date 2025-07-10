@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>To-Do List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Filtro de categoría -->
+  <ion-item>
+    <ion-label>Categoría</ion-label>
+    <ion-select [(ngModel)]="selectedCategoryId">
+      <ion-select-option value="">Todas</ion-select-option>
+      <ion-select-option *ngFor="let cat of categories" [value]="cat.id">
+        {{ cat.name }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Lista de tareas -->
+  <ion-list>
+    <ion-item-sliding *ngFor="let task of filteredTasks">
+      <ion-item>
+        <ion-label (click)="toggleTask(task.id)">
+          <h2 [ngClass]="{ 'completed': task.completed }">{{ task.title }}</h2>
+          <p>{{ getCategoryName(task.categoryId) }}</p>
+        </ion-label>
+        <ion-checkbox
+          slot="end"
+          [checked]="task.completed"
+          (ionChange)="toggleTask(task.id)"
+        ></ion-checkbox>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="danger" expandable (click)="deleteTask(task.id)">
+          <ion-icon slot="start" name="trash"></ion-icon>
+          Eliminar
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <!-- Botón para agregar tarea -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addTask()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
